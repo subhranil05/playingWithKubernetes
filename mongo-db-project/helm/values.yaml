@@ -4,12 +4,17 @@
 
 replicaCount: 1
 
-image:
+image1:
   repository: mongo
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+image2:
+  repository: mongo-express
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""

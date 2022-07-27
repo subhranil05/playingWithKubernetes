@@ -15,7 +15,7 @@ spec:
         app: mongo-express
     spec:
       containers:
-      - image: mongo-express
+      - image: {{ .Values.image2.repository }}
         name: mongo-express
         ports:
           - containerPort: {{ .Values.service.port }}
