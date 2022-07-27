@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongodb
+  name: {{ .Release.Name }}-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - image: mongo
+        name: mongodb
+        ports:
+        - containerPort: {{ .Values.server.bind.port }}
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-mongo-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-mongo-secret
+              key: mongo-root-password
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-mongo-service
+  name: {{ .Release.Name }}-service
+spec:
+  ports:
+  - port: {{ .Values.server.bind.port }}
+    protocol: TCP
+    targetPort: {{ .Values.server.bind.port }}
+  selector:
+    app: mongodb

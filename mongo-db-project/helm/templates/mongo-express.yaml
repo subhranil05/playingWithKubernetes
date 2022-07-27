@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo-express
+  name: {{ .Release.Name }}-express
+spec:
+  replicas: {{.Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - image: mongo-express
+        name: mongo-express
+        ports:
+          - containerPort: {{ .Values.service.port }}
+        env:
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: my-mongo-secret
+                key: mongo-root-username
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: my-mongo-secret
+                key: mongo-root-password
+              
+          - name: ME_CONFIG_MONGODB_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: my-mongo-configmap
+                key: mongo-db-url
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-express-service
+  name: {{ .Release.Name }}-express-service
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.service.port }}
+    nodePort: {{ .Values.service.nodePort }}
+  selector:
+    app: mongo-express
+
+
+              
