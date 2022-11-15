@@ -9,3 +9,7 @@ variable "profile" {
 variable "key_pair" {
   default = "terraform-key"
 }
+
+variable "backend" {
+  default = "circleci-terraform"
+}

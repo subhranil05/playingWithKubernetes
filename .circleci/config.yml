@@ -32,7 +32,6 @@ workflows:
           context: terraform
           requires:
             - hold-apply
-            - terraform/apply
                       
 
 # VS Code Extension Version: 1.0.2
