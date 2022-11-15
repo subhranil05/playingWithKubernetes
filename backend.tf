@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = var.backend
+    bucket = "circleci-terraform"
     key = "circleci/terraform.tfstate"
-    region = var.region
+    region = "us-east-2"
   }
 }
