@@ -25,12 +25,14 @@ workflows:
           type: approval
           requires:
             - terraform/apply
+
       - terraform/destroy:
           checkout: true
           attach-workspace: true
           context: terraform
           requires:
             - hold-apply
+            - terraform/apply
                       
 
 # VS Code Extension Version: 1.0.2
