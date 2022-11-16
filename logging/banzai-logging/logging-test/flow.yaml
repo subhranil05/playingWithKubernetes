@@ -1,0 +1,53 @@
+## For GCS 
+# apiVersion: logging.banzaicloud.io/v1beta1
+# kind: Flow
+# metadata:
+#   name: flow-sample
+# spec:
+#   filters:
+#     - tag_normaliser: {}
+#   match:
+#     - select:
+#         labels:
+#           app.kubernetes.io/name: log-generator
+#   localOutputRefs:
+#   - gcs-output-sample       
+
+## For Azure S3
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterFlow
+metadata:
+  name: s3-flow
+spec:
+  filters:
+    - tag_normaliser: 
+        format: ${namespace_name}/${pod_name}/${container_name}
+  match:
+    - select:
+        labels:
+          app.kubernetes.io/name: nginx
+        namespaces:
+          - logging1 
+    - select:
+        labels:
+          color: blue       
+          # app.kubernetes.io/component: red
+        namespaces:
+          - logging2
+  globalOutputRefs:
+  - s3-output
+
+## For Azure 
+# apiVersion: logging.banzaicloud.io/v1beta1
+# kind: Flow
+# metadata:
+#   name: flow-sample
+# spec:
+#   filters:
+#     - tag_normaliser: {}
+#   match:
+#     - select:
+#         labels:
+#           app.kubernetes.io/name: log-generator
+#   localOutputRefs:
+#   - azure-output-sample

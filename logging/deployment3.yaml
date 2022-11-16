@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx3-deployment
+  # namespace: logging3
+  labels:
+    app.kubernetes.io/component: red
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: red
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: red
+    spec:
+      containers:
+      - name: nginx3
+        image: banzaicloud/log-generator:0.3.2
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service3
+  # namespace: logging3
+spec:
+  selector:
+    app.kubernetes.io/component: red
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   labels:
+#     run: alpine
+#   name: alpine-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       run: alpine
+#   template:
+#     metadata:
+#       labels:
+#         run: alpine
+#     spec:
+#       containers:
+#       - image: alpine:latest
+#         command:
+#           - /bin/sh
+#           - "-c"
+#           - "sleep 360000"
+#         imagePullPolicy: IfNotPresent
+#         name: alpine

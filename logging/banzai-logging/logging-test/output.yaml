@@ -1,0 +1,73 @@
+## For GCP
+# apiVersion: logging.banzaicloud.io/v1beta1
+# kind: Output
+# metadata:
+#   name: gcs-output-sample
+#   namespace: logging
+# spec:
+#   gcs:
+#     credentials_json:
+#       valueFrom:
+#         secretKeyRef:
+#           name: gcs-secret
+#           key: credentials.json
+#     project: dataos-ck-res-yak-dev
+#     bucket: myminiobucket
+#     path: logs/${tag}/%Y/%m/%d/
+#     buffer:
+#       timekey: 10m
+#       timekey_wait: 30s
+#       timekey_use_utc: true
+
+
+## For AWS S3
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: ClusterOutput
+metadata:
+  name: s3-output
+  namespace: logging
+spec:
+  s3:
+    aws_key_id:
+      valueFrom:
+        secretKeyRef:
+          name: logging-s3
+          key: awsAccessKeyId
+    aws_sec_key:
+      valueFrom:
+        secretKeyRef:
+          name: logging-s3
+          key: awsSecretAccessKey
+    s3_bucket: myminiobucket
+    s3_region: us-east-2
+    path: logs/${tag}/%Y/%m/%d/
+    buffer:
+      timekey: 2m
+      timekey_wait: 30s
+      timekey_use_utc: true
+
+
+## For Azure
+# apiVersion: logging.banzaicloud.io/v1beta1
+# kind: Output
+# metadata:
+#   name: azure-output-sample
+#   namespace: logging
+# spec:
+#   azurestorage:
+#     azure_storage_account:
+#       valueFrom:
+#         secretKeyRef:
+#           name: azure-secret
+#           key: AZURE_STORAGE_NAME
+#     azure_storage_access_key:
+#       valueFrom:
+#         secretKeyRef:
+#           name: azure-secret
+#           key: AZURE_STORAGE_ACCESS_KEY    
+#     azure_container: test-fluentbit
+#     path: mylogs/${tag}/%Y/%m/%d/
+#     buffer:
+#       timekey: 4m
+#       timekey_wait: 30s
+#       timekey_use_utc: true

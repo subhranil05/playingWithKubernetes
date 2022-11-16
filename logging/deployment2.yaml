@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx2-deployment
+  namespace: logging2
+  labels:
+    color: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      color: blue
+  template:
+    metadata:
+      labels:
+        color: blue
+    spec:
+      containers:
+      - name: nginx2
+        image: rock1017/log-generator
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service2
+  namespace: logging2
+spec:
+  selector:
+    color: blue
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: busybox-deployment
+#   labels:
+#     color: blue
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       color: blue
+#   template:
+#     metadata:
+#       labels:
+#         color: blue
+#     spec:
+#       containers:
+#       - image: busybox
+#         command:
+#           - sleep
+#           - "360000"
+#         imagePullPolicy: IfNotPresent
+#         name: busybox   

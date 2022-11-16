@@ -1,0 +1,10 @@
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Logging
+metadata:
+  name: default-logging-simple
+spec:
+  fluentd: {}
+  fluentbit: {}
+  allowClusterResourcesFromAllNamespaces: true
+  controlNamespace: logging
+  # watchNamespaces: ["logging1", "logging2", "logging3"]
